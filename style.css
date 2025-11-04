@@ -1,0 +1,134 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-image: url("tlo.png");
+  background-repeat: repeat;
+  background-attachment: fixed;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #222;
+  animation: fadeIn 0.8s ease-in;
+  text-align: center;
+}
+
+header {
+  padding: 20px 0;
+}
+
+header h1 {
+  font-size: 36px;
+  color: #2f2f2f;
+  margin-top: 10px;
+}
+
+nav {
+  margin: 20px 0;
+}
+
+nav a {
+  display: inline-block;
+  text-decoration: none;
+  background-color: #333;
+  color: white;
+  font-weight: bold;
+  padding: 10px 18px;
+  border-radius: 10px;
+  margin: 6px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+nav a:hover {
+  background-color: #555;
+  transform: scale(1.05);
+}
+
+.section {
+  margin: 30px auto 60px auto;
+  padding: 20px;
+  max-width: 900px;
+  background-color: #f4f4f4;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease-in-out;
+  position: relative;
+  z-index: 1;
+}
+
+.section h2 {
+  color: #222;
+  margin-bottom: 15px;
+  font-size: 28px;
+}
+
+.section p {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.section.news {
+  text-align: center;
+  background-color: #f4f4f4;
+  padding-bottom: 40px;
+}
+
+.section.news div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.section.news img {
+  max-width: 90%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  margin-bottom: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.section.news img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.section.news h3 {
+  margin-top: 10px;
+  font-size: 22px;
+  color: #222;
+}
+
+.section.news p {
+  font-size: 18px;
+  color: #2a2a2a;
+  margin: 3px 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 28px;
+  }
+
+  nav a {
+    display: block;
+    margin: 8px auto;
+  }
+
+  .section {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .section.news img {
+    max-width: 100%;
+  }
+}
