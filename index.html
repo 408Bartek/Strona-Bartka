@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strona Bartka</title>
+  <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+
+  <video id="bg-video" autoplay muted loop playsinline>
+    <source src="tlo.mp4" type="video/mp4">
+  </video>
+
+
+  <div id="fade-overlay"></div>
+
+  <div id="content">
+  
+  </div>
+
+  <script src="main.js"></script>
+
+  <header>
+    <h1>Witam na mojej stronie!</h1>
+  </header>
+
+  <div class="section">
+    <p><strong>Poniżej widać hyperlinki prowadzące do innych stron:</strong></p>
+    <nav>
+      <a href="graty.html">Moje Graty</a>
+      <a href="projekty.html">Moje Projekty</a>
+      <a href="p.html">Przydatne Rzeczy</a>
+    </nav>
+  </div>
+
+  <div class="section news">
+    <p><strong>Poniżej widać wiadomości dotyczące strony i mojego życia:</strong></p>
+    <img src="remont.png" alt="Remont">
+    <p>Dzisiaj (4.11.2025) strona została przebudowana</p>
+  </div>
+  
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const contentElements = document.querySelectorAll(
+    "header, nav, .content, #content, .section"
+  );
+
+  let navigating = false;
+
+  document.querySelectorAll('a[href]').forEach(link => {
+    const href = link.getAttribute('href');
+
+    if (!href || href.startsWith('#') || href.startsWith('javascript:') ||
+        href.startsWith('mailto:') || href.startsWith('tel:')) return;
+
+    link.addEventListener('click', e => {
+      if (navigating) {
+        e.preventDefault();
+        return;
+      }
+
+      e.preventDefault();
+      navigating = true;
+
+      contentElements.forEach(el => el.classList.add('page-exit'));
+
+      document.querySelectorAll('a, button, input').forEach(el => {
+        el.style.pointerEvents = 'none';
+        el.setAttribute('aria-hidden', 'true');
+      });
+
+      setTimeout(() => {
+        window.location.href = href;
+      }, 750);
+    });
+  });
+});
+</script>
+
+<script>
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted && performance.getEntriesByType("navigation")[0].type === "back_forward") {
+    window.location.reload();
+  }
+});
+
+</script>
+
+
+</body>
+</html>
