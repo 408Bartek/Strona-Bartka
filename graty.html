@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moje Graty - Strona Bartka</title>
+  <link rel="stylesheet" href="style.css">
+  
+  <video autoplay muted loop playsinline id="bg-video">
+  <source src="tlo.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+</head>
+<body>
+  <header>
+    <h1>Strona Bartka</h1>
+  </header>
+
+  <div class="section">
+    <p><strong>Poniżej widać hyperlinki prowadzące do innych stron:</strong></p>
+    <nav>
+      <a href="projekty.html">Moje Projekty</a>
+      <a href="index.html">Strona Główna</a>
+      <a href="p.html">Przydatne Rzeczy</a>
+      <a href="gry.html">Moje Gry</a>
+      <a href="staregraty.html">Tryb dla ziemniaków</a>
+      <a href="https://tipply.pl/@408bartek" target="_blank" class="nav-btn">Donate</a>
+    </nav>
+  </div>
+
+  <div class="section news">
+    <h2>Moje Graty</h2>
+
+    <div>
+      <img src="grat1.png" alt="Komputer">
+      <h3>Wady</h3>
+      <p>Powoli się starzeje</p>
+      <p>Jest uszkodzony od napraw</p>
+      <h3>Zalety</h3>
+      <p>Wspiera Windows 11</p>
+      <p>Jest ładny</p>
+	  <p>‎ </p>
+	  <a href="" class="nav-btn disabled" onclick="return false;">Brak dodatkowych informacji</a>
+    </div>
+
+    <div>
+      <img src="grat2.png" alt="Laptop">
+      <h3>Wady</h3>
+      <p>Jest stary i wolny</p>
+      <p>Został rozgracony i jest w częściach</p>
+      <h3>Zalety</h3>
+      <p>Wyglądał ładnie i estetycznie</p>
+      <p>Ma dobrą kartę graficzną</p>
+	  <p>‎ </p>
+	  <a href="https://www.sony.pl/electronics/support/laptop-pc-vpc-series/vpceh1m1e/specifications" target="_blank" class="nav-btn">Więcej</a>
+    </div>
+
+    <div>
+      <img src="grat4.png" alt="Laptop 2">
+      <h3>Wady</h3>
+      <p>Ma 22 lata</p>
+      <p>Był okropny nawet jak wyszedł</p>
+      <p>Ma okropny BIOS</p>
+      <h3>Zalety</h3>
+      <p>Jest cichy (w miarę)</p>
+      <p>Ma Pentiuma a nie Celerona</p>
+
+	  	  <p>‎ </p>
+	  <a href="https://www.productindetail.com/pn/acer-travelmate-292lci" target="_blank" class="nav-btn">Więcej</a>
+    </div>
+
+    <div>
+      <img src="grat5.png" alt="PlayStation 2">
+      <h3>Wady</h3>
+      <p>Nie czyta wielu płyt</p>
+      <p>Łatwe do rozwalenia</p>
+      <h3>Zalety</h3>
+      <p>Jest ciche</p>
+      <p>Gry super chodzą</p>
+	  <p>‎ </p>
+	  <a href="https://pl.wikipedia.org/wiki/PlayStation_2" target="_blank" class="nav-btn">Więcej</a>
+    </div>
+
+    <div>
+      <img src="grat6.png" alt="Laptop 3">
+      <h3>Wady</h3>
+      <p>Ma rozwalony ekran</p>
+      <p>Nie posiada dedykowanego GPU</p>
+      <h3>Zalety</h3>
+      <p>Fajnie działa Windows 2000</p>
+      <p>Ma mocnego Pentiuma 4</p>
+	  <p>‎ </p>
+	  <a href="" class="nav-btn disabled" onclick="return false;">Brak dodatkowych informacji</a>
+    </div>
+	
+	<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const contentElements = document.querySelectorAll(
+    "header, nav, .content, #content, .section"
+  );
+
+  let navigating = false;
+
+  document.querySelectorAll('a[href]').forEach(link => {
+    const href = link.getAttribute('href');
+
+    if (!href || href.startsWith('#') || href.startsWith('javascript:') ||
+        href.startsWith('mailto:') || href.startsWith('tel:')) return;
+
+    link.addEventListener('click', e => {
+      if (navigating) {
+        e.preventDefault();
+        return;
+      }
+
+      e.preventDefault();
+      navigating = true;
+
+      contentElements.forEach(el => el.classList.add('page-exit'));
+
+      document.querySelectorAll('a, button, input').forEach(el => {
+        el.style.pointerEvents = 'none';
+        el.setAttribute('aria-hidden', 'true');
+      });
+
+      setTimeout(() => {
+        window.location.href = href;
+      }, 750);
+    });
+  });
+});
+</script>
+
+<script>
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted && performance.getEntriesByType("navigation")[0].type === "back_forward") {
+    window.location.reload();
+  }
+});
+
+</script>
+
+</body>
+</html>
