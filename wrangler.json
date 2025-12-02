@@ -1,7 +1,2 @@
-{
-  "name": "strona-bartka",
-  "compatibility_date": "2025-11-13",
-  "assets": {
-    "directory": "./"
-  }
-}
+// wrangler.json
+"name": "stronabartka",
