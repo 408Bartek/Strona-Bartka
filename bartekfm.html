@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BartekFM™ - Strona Bartka</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+
+<body>
+
+<div id="fade-overlay"></div>
+
+<header>
+  <h1>Strona Bartka</h1>
+</header>
+
+<div class="section">
+  <a href="index.html">Newsy</a>
+  <a href="p.html">Programy</a>
+  <a href="projekty.html">Projekty</a>
+  <a href="omnie.html">O mnie</a>
+  <a href="bartekfm.html">BartekFM™</a>
+  <a href="donate.html">Wsparcie</a>
+</div>
+
+<div class="section news">
+  <h2>BartekFM™ – Najlepsze hity!</h2>
+
+  <div id="bartekfm">
+
+    <div id="now-playing"></div>
+    <div id="time-info"></div>
+
+    <canvas id="visualizer" width="420" height="80"></canvas>
+
+    <div class="radio-controls">
+      <button id="mute-toggle" class="radio-button">UNMUTE</button>
+    </div>
+
+    <audio id="audio"></audio>
+  </div>
+</div>
+
+<footer class="bottom-text">
+  <span id="footer-text"></span>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const texts = [
+    "Witam na mojej stronie!",
+    "Jak się masz?",
+    "Ta strona trzyma się na trytytkach i taśmie klejącej",
+    "Czysty HTML, CSS i JavaScript!",
+    "QWERTYUIOPASDFGHJKLZXCVBNM",
+    "IASH8UHASUYHDU",
+    "Say my name!",
+    "LAGI LAGI LAGI",
+    "Potrzebny pani/panu telewizor?",
+    "W pani/pana mieszkaniu jest bomba",
+	"67",
+	"69",
+	"Haha",
+	"Memory Access Violation",
+	"Zażółć gęślą jaźń, by fikuśny wór kłamał pod tęcz",
+	"Nie wiem co tu napisać"
+  ];
+
+  const now = new Date();
+  const month = now.getMonth();
+  const day = now.getDate();
+
+  let chosenText;
+
+  chosenText = texts[Math.floor(Math.random() * texts.length)];
+
+  document.getElementById("footer-text").textContent =
+    `2026 Bartosz Szabelski – ${chosenText}`;
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const audio = document.getElementById("audio");
+  const nowPlaying = document.getElementById("now-playing");
+  const timeInfo = document.getElementById("time-info");
+  const muteToggle = document.getElementById("mute-toggle");
+  const canvas = document.getElementById("visualizer");
+  const ctx = canvas.getContext("2d");
+
+  const songs = [
+    "Boston - More than a Feeling.mp3",
+    "Kult - Arahja.mp3",
+    "Paktofonika - Chwile Ulotne.mp3",
+    "Paktofonika - Nie ma mnie dla nikogo.mp3",
+    "Soundgarden - Black Hole Sun.mp3",
+    "Tame Impala - Let It Happen.mp3",
+    "U96 - Club Bizarre.mp3"
+  ].sort(() => Math.random() - 0.5);
+
+  let index = 0;
+
+  function formatTime(sec) {
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  }
+
+  function playCurrent() {
+    const file = songs[index];
+    audio.src = `MUZYKA/${encodeURIComponent(file)}`;
+    audio.muted = true;
+    audio.play().catch(() => {});
+    nowPlaying.textContent = file.replace(".mp3", "");
+  }
+
+  audio.addEventListener("loadedmetadata", () => {
+    timeInfo.textContent = `0:00 / ${formatTime(audio.duration)}`;
+  });
+
+  audio.addEventListener("timeupdate", () => {
+    if (!isNaN(audio.duration)) {
+      timeInfo.textContent =
+        `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+    }
+  });
+
+  audio.addEventListener("ended", () => {
+    index = (index + 1) % songs.length;
+    playCurrent();
+  });
+
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const source = audioCtx.createMediaElementSource(audio);
+  const analyser = audioCtx.createAnalyser();
+
+  analyser.fftSize = 64;
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
+
+  const data = new Uint8Array(analyser.frequencyBinCount);
+
+  function draw() {
+    requestAnimationFrame(draw);
+    analyser.getByteFrequencyData(data);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const barWidth = canvas.width / data.length;
+
+    for (let i = 0; i < data.length; i++) {
+      const h = data[i] / 255 * canvas.height;
+      ctx.fillStyle = "white";
+      ctx.fillRect(
+        i * barWidth,
+        canvas.height - h,
+        barWidth - 2,
+        h
+      );
+    }
+  }
+
+  draw();
+
+  muteToggle.addEventListener("click", () => {
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    audio.muted = !audio.muted;
+    muteToggle.textContent = audio.muted ? "UNMUTE" : "MUTE";
+  });
+
+  playCurrent();
+});
+</script>
+
+<style>
+#bartekfm {
+  margin-top: 20px;
+}
+
+#now-playing {
+  margin-top: 14px;
+  font-size: 16px;
+}
+
+#time-info {
+  margin-top: 6px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+#visualizer {
+  margin-top: 16px;
+  width: 100%;
+  max-width: 420px;
+  height: 80px;
+
+  background: rgba(0,0,0,0.55);
+  border-radius: 12px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 8px 24px rgba(0,0,0,.6);
+}
+
+.radio-controls {
+  margin-top: 18px;
+}
+
+.radio-button {
+  padding: 14px 28px;
+  margin: 10px;
+
+  border-radius: 14px;
+  border: none;
+
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+
+  color: #fff;
+  letter-spacing: .6px;
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 22px rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(255,255,255,.08);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    background .25s ease;
+}
+
+.radio-button:hover {
+  transform: translateY(-3px);
+  background: rgba(63, 63, 63, 0.55);
+}
+
+.radio-button:active {
+  transform: translateY(1px) scale(.97);
+}
+</style>
+
+</body>
+</html>

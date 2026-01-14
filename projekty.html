@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projekty - Strona Bartka</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+</head>
+<body>
+  <header>
+    <h1>Strona Bartka</h1>
+  </header>
+
+<div class="section">
+    <a href="index.html">Newsy</a>
+    <a href="p.html">Programy</a>
+    <a href="projekty.html">Projekty</a>
+	<a href="omnie.html">O mnie</a>
+	<a href="bartekfm.html">BartekFM™</a>
+    <a href="donate.html">Wsparcie</a>
+</div>
+
+  <div class="section news">
+    <h2>Moje Projekty</h2>
+
+    <div>
+      <img src="apple1.png" alt="AppleClicker">
+	  <a href="https://berlin408.itch.io/appleclickerold" target="_blank" class="nav-btn">Odwiedź</a>
+      <h3>Co to jest?</h3>
+      <p>Gra na urządzenia z Androidem, w której klikasz ikonę jabłka (lub innych owoców).</p>
+      <h3>Inne informacje</h3>
+      <p>Została stworzona w 3 dni, a jej najnowsze wydanie to 1.1.3.</p>
+    </div>
+
+    <div>
+      <img src="urg.png" alt="URG">
+	  <a href="https://www.roblox.com/games/72027380750153/Untitled-Roleplay-Game-MAP-UPDATE-V2" target="_blank" class="nav-btn">Odwiedź</a>
+      <h3>Co to jest?</h3>
+      <p>Gra typu Roleplay (odgrywanie ról) w Roblox.</p>
+      <h3>Inne informacje</h3>
+      <p>Gra oferuje domy, miejsca pracy i rozbudowane funkcje.</p>
+    </div>
+
+    <div>
+      <img src="pld.png" alt="Poland Drive">
+	  <a href="https://www.roblox.com/games/110553246462225/Poland-drive-Winter" target="_blank" class="nav-btn">Odwiedź</a>
+      <h3>Co to jest?</h3>
+      <p>Gra Roleplay w Roblox, której akcja dzieje się w Polsce.</p>
+      <h3>Inne informacje</h3>
+      <p>Starszy projekt sprzed roku. Obecnie zapomniany, ale klimatyczny.</p>
+    </div>
+  </div>
+  
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const contentElements = document.querySelectorAll(
+    "header, nav, .content, #content, .section"
+  );
+
+  let navigating = false;
+
+  document.querySelectorAll('a[href]').forEach(link => {
+    const href = link.getAttribute('href');
+
+    if (!href || href.startsWith('#') || href.startsWith('javascript:') ||
+        href.startsWith('mailto:') || href.startsWith('tel:')) return;
+
+    link.addEventListener('click', e => {
+      if (navigating) {
+        e.preventDefault();
+        return;
+      }
+
+      e.preventDefault();
+      navigating = true;
+
+      contentElements.forEach(el => el.classList.add('page-exit'));
+
+      document.querySelectorAll('a, button, input').forEach(el => {
+        el.style.pointerEvents = 'none';
+        el.setAttribute('aria-hidden', 'true');
+      });
+
+      setTimeout(() => {
+        window.location.href = href;
+      }, 750);
+    });
+  });
+});
+</script>
+
+<script>
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted && performance.getEntriesByType("navigation")[0].type === "back_forward") {
+    window.location.reload();
+  }
+});
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const texts = [
+    "Witam na mojej stronie!",
+    "Jak się masz?",
+    "Ta strona trzyma się na trytytkach i taśmie klejącej",
+    "Czysty HTML, CSS i JavaScript!",
+    "QWERTYUIOPASDFGHJKLZXCVBNM",
+    "IASH8UHASUYHDU",
+    "Say my name!",
+    "LAGI LAGI LAGI",
+    "Potrzebny pani/panu telewizor?",
+    "W pani/pana mieszkaniu jest bomba",
+	"67",
+	"69",
+	"Haha",
+	"Memory Access Violation",
+	"Zażółć gęślą jaźń, by fikuśny wór kłamał pod tęcz",
+	"Nie wiem co tu napisać"
+  ];
+
+  const now = new Date();
+  const month = now.getMonth();
+  const day = now.getDate();
+
+  let chosenText;
+
+  chosenText = texts[Math.floor(Math.random() * texts.length)];
+
+  document.getElementById("footer-text").textContent =
+    `2026 Bartosz Szabelski – ${chosenText}`;
+});
+</script>
+
+ <script>
+document.querySelectorAll('.section.news img').forEach(img => {
+  let rect;
+
+  img.addEventListener('mouseenter', () => {
+    rect = img.getBoundingClientRect();
+    img.style.transition = 'transform 0.25s ease-out';
+  });
+
+  img.addEventListener('mousemove', e => {
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = ((y - centerY) / centerY) * -6;
+    const rotateY = ((x - centerX) / centerX) * 6;
+
+    img.style.transform = `
+      scale(1.03)
+      rotateX(${rotateX}deg)
+      rotateY(${rotateY}deg)
+    `;
+  });
+
+  img.addEventListener('mouseleave', () => {
+    img.style.transition = 'transform 0.6s ease';
+    img.style.transform = 'scale(1) rotateX(0) rotateY(0)';
+  });
+});
+</script>
+
+<footer class="bottom-text">
+  <span id="footer-text"></span>
+</footer>
+ 
+</body>
+</html>
