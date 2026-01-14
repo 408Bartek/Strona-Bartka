@@ -163,12 +163,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   draw();
+	
+muteToggle.addEventListener("click", async () => {
+  if (audioCtx.state === "suspended") {
+    await audioCtx.resume();
+  }
 
-  muteToggle.addEventListener("click", () => {
-    if (audioCtx.state === "suspended") audioCtx.resume();
-    audio.muted = !audio.muted;
-    muteToggle.textContent = audio.muted ? "UNMUTE" : "MUTE";
-  });
+  if (audio.muted) {
+    audio.muted = false;
+    audio.play().catch(() => {});
+    muteToggle.textContent = "MUTE";
+  } else {
+    audio.muted = true;
+    muteToggle.textContent = "UNMUTE";
+  }
+});
+
 
   playCurrent();
 });
@@ -244,3 +254,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
