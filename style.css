@@ -226,6 +226,10 @@ a:active {
     0 8px 24px rgba(0,0,0,.6);
 }
 
+.radio-button {
+  background: rgba(0, 0, 0, 0.65) !important;
+  color: #fff !important;
+}
 
 @media (max-width: 768px) {
   header h1 { font-size: 26px; }
@@ -234,4 +238,5 @@ a:active {
   .section.news img {
     max-width: 100%;
   }
+
 }
