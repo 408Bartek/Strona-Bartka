@@ -231,6 +231,13 @@ a:active {
   color: #fff !important;
 }
 
+#bartekfm .radio-button {
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+}
+
 @media (max-width: 768px) {
   header h1 { font-size: 26px; }
   a { padding: 11px 20px; font-size: 15px; }
@@ -240,3 +247,4 @@ a:active {
   }
 
 }
+
