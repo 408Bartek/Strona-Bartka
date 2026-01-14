@@ -29,13 +29,14 @@
   <h2>BartekFM™ – Najlepsze hity!</h2>
 
   <div id="bartekfm">
+
     <div id="now-playing"></div>
     <div id="time-info"></div>
 
     <canvas id="visualizer" width="420" height="80"></canvas>
 
     <div class="radio-controls">
-      <button id="mute-toggle" class="button">UNMUTE</button>
+      <button id="mute-toggle" class="radio-button">UNMUTE</button>
     </div>
 
     <audio id="audio"></audio>
@@ -157,7 +158,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   muteToggle.addEventListener("click", async () => {
     if (audioCtx.state === "suspended") await audioCtx.resume();
-
     audio.muted = !audio.muted;
     muteToggle.textContent = audio.muted ? "UNMUTE" : "MUTE";
     if (!audio.muted) audio.play().catch(() => {});
@@ -166,6 +166,70 @@ document.addEventListener("DOMContentLoaded", () => {
   playCurrent();
 });
 </script>
+
+<style>
+#bartekfm {
+  margin-top: 20px;
+}
+
+#now-playing {
+  margin-top: 14px;
+  font-size: 16px;
+}
+
+#time-info {
+  margin-top: 6px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+#visualizer {
+  margin-top: 16px;
+  width: 100%;
+  max-width: 420px;
+  height: 80px;
+  background: rgba(0,0,0,0.55);
+  border-radius: 12px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 8px 24px rgba(0,0,0,.6);
+}
+
+.radio-controls {
+  margin-top: 18px;
+}
+
+.radio-button {
+  appearance: none;
+  -webkit-appearance: none;
+
+  padding: 14px 28px;
+  margin: 10px;
+  border-radius: 14px;
+  border: none;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  letter-spacing: .6px;
+  cursor: pointer;
+  box-shadow:
+    0 8px 22px rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(255,255,255,.08);
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    background .25s ease;
+}
+
+.radio-button:hover {
+  transform: translateY(-3px);
+  background: rgba(63, 63, 63, 0.55);
+}
+
+.radio-button:active {
+  transform: translateY(1px) scale(.97);
+}
+</style>
 
 </body>
 </html>
