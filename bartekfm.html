@@ -82,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ].sort(() => Math.random() - 0.5);
 
   let index = 0;
+  let isMuted = true;
 
   function formatTime(sec) {
     const m = Math.floor(sec / 60);
@@ -92,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function playCurrent() {
     const file = songs[index];
     audio.src = `MUZYKA/${encodeURIComponent(file)}`;
-    audio.muted = true;
+    audio.muted = isMuted;
     audio.play().catch(() => {});
     nowPlaying.textContent = file.replace(".mp3", "");
   }
@@ -140,9 +141,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   muteToggle.addEventListener("click", async () => {
     if (audioCtx.state === "suspended") await audioCtx.resume();
-    audio.muted = !audio.muted;
-    if (!audio.muted) audio.play().catch(() => {});
-    muteToggle.textContent = audio.muted ? "UNMUTE" : "MUTE";
+
+    isMuted = !isMuted;
+    audio.muted = isMuted;
+    if (!isMuted) audio.play().catch(() => {});
+    muteToggle.textContent = isMuted ? "UNMUTE" : "MUTE";
   });
 
   skipButton.addEventListener("click", async () => {
@@ -179,9 +182,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 .radio-button {
   padding: 14px 28px;
+  margin: 10px;
   border-radius: 14px;
   border: none;
-  background: rgba(0,0,0,0.65);
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
   color: #fff;
   letter-spacing: .6px;
   cursor: pointer;
@@ -191,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 .radio-button:hover {
   transform: translateY(-3px);
-  background: rgba(63,63,63,.55);
+  background: rgba(63, 63, 63, 0.55);
 }
 
 .radio-button:active {
