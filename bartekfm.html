@@ -29,16 +29,12 @@
   <h2>BartekFM™ – Najlepsze hity!</h2>
 
   <div id="bartekfm">
-
     <div id="now-playing"></div>
     <div id="time-info"></div>
-
     <canvas id="visualizer" width="420" height="80"></canvas>
-
     <div class="radio-controls">
       <button id="mute-toggle" class="radio-button">UNMUTE</button>
     </div>
-
     <audio id="audio"></audio>
   </div>
 </div>
@@ -60,22 +56,15 @@ document.addEventListener("DOMContentLoaded", () => {
     "LAGI LAGI LAGI",
     "Potrzebny pani/panu telewizor?",
     "W pani/pana mieszkaniu jest bomba",
-	"67",
-	"69",
-	"Haha",
-	"Memory Access Violation",
-	"Zażółć gęślą jaźń, by fikuśny wór kłamał pod tęcz",
-	"Nie wiem co tu napisać"
+    "67",
+    "69",
+    "Haha",
+    "Memory Access Violation",
+    "Zażółć gęślą jaźń, by fikuśny wór kłamał pod tęcz",
+    "Nie wiem co tu napisać"
   ];
 
-  const now = new Date();
-  const month = now.getMonth();
-  const day = now.getDate();
-
-  let chosenText;
-
-  chosenText = texts[Math.floor(Math.random() * texts.length)];
-
+  const chosenText = texts[Math.floor(Math.random() * texts.length)];
   document.getElementById("footer-text").textContent =
     `2026 Bartosz Szabelski – ${chosenText}`;
 });
@@ -98,9 +87,14 @@ document.addEventListener("DOMContentLoaded", () => {
     "Soundgarden - Black Hole Sun.mp3",
     "Tame Impala - Let It Happen.mp3",
     "U96 - Club Bizarre.mp3"
-  ].sort(() => Math.random() - 0.5);
+  ];
 
-  let index = 0;
+  for (let i = songs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [songs[i], songs[j]] = [songs[j], songs[i]];
+  }
+
+  let index = Math.floor(Math.random() * songs.length);
 
   function formatTime(sec) {
     const m = Math.floor(sec / 60);
@@ -145,113 +139,32 @@ document.addEventListener("DOMContentLoaded", () => {
   function draw() {
     requestAnimationFrame(draw);
     analyser.getByteFrequencyData(data);
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     const barWidth = canvas.width / data.length;
-
     for (let i = 0; i < data.length; i++) {
       const h = data[i] / 255 * canvas.height;
       ctx.fillStyle = "white";
-      ctx.fillRect(
-        i * barWidth,
-        canvas.height - h,
-        barWidth - 2,
-        h
-      );
+      ctx.fillRect(i * barWidth, canvas.height - h, barWidth - 2, h);
     }
   }
 
   draw();
-	
-muteToggle.addEventListener("click", async () => {
-  if (audioCtx.state === "suspended") {
-    await audioCtx.resume();
-  }
 
-  if (audio.muted) {
-    audio.muted = false;
-    audio.play().catch(() => {});
-    muteToggle.textContent = "MUTE";
-  } else {
-    audio.muted = true;
-    muteToggle.textContent = "UNMUTE";
-  }
-});
-
+  muteToggle.addEventListener("click", async () => {
+    if (audioCtx.state === "suspended") await audioCtx.resume();
+    if (audio.muted) {
+      audio.muted = false;
+      audio.play().catch(() => {});
+      muteToggle.textContent = "MUTE";
+    } else {
+      audio.muted = true;
+      muteToggle.textContent = "UNMUTE";
+    }
+  });
 
   playCurrent();
 });
 </script>
 
-<style>
-#bartekfm {
-  margin-top: 20px;
-}
-
-#now-playing {
-  margin-top: 14px;
-  font-size: 16px;
-}
-
-#time-info {
-  margin-top: 6px;
-  font-size: 13px;
-  opacity: 0.7;
-}
-
-#visualizer {
-  margin-top: 16px;
-  width: 100%;
-  max-width: 420px;
-  height: 80px;
-
-  background: rgba(0,0,0,0.55);
-  border-radius: 12px;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.08),
-    0 8px 24px rgba(0,0,0,.6);
-}
-
-.radio-controls {
-  margin-top: 18px;
-}
-
-.radio-button {
-  padding: 14px 28px;
-  margin: 10px;
-
-  border-radius: 14px;
-  border: none;
-
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(6px);
-
-  color: #fff;
-  letter-spacing: .6px;
-  cursor: pointer;
-
-  box-shadow:
-    0 8px 22px rgba(0,0,0,.5),
-    inset 0 1px 0 rgba(255,255,255,.08);
-
-  transition:
-    transform .25s ease,
-    box-shadow .25s ease,
-    background .25s ease;
-}
-
-.radio-button:hover {
-  transform: translateY(-3px);
-  background: rgba(63, 63, 63, 0.55);
-}
-
-.radio-button:active {
-  transform: translateY(1px) scale(.97);
-}
-</style>
-
 </body>
 </html>
-
