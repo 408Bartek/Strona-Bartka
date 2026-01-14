@@ -31,10 +31,13 @@
   <div id="bartekfm">
     <div id="now-playing"></div>
     <div id="time-info"></div>
+
     <canvas id="visualizer" width="420" height="80"></canvas>
+
     <div class="radio-controls">
-      <button id="mute-toggle" class="radio-button">UNMUTE</button>
+      <button id="mute-toggle" class="button">UNMUTE</button>
     </div>
+
     <audio id="audio"></audio>
   </div>
 </div>
@@ -64,9 +67,8 @@ document.addEventListener("DOMContentLoaded", () => {
     "Nie wiem co tu napisać"
   ];
 
-  const chosenText = texts[Math.floor(Math.random() * texts.length)];
   document.getElementById("footer-text").textContent =
-    `2026 Bartosz Szabelski – ${chosenText}`;
+    `2026 Bartosz Szabelski – ${texts[Math.floor(Math.random() * texts.length)]}`;
 });
 </script>
 
@@ -87,14 +89,9 @@ document.addEventListener("DOMContentLoaded", () => {
     "Soundgarden - Black Hole Sun.mp3",
     "Tame Impala - Let It Happen.mp3",
     "U96 - Club Bizarre.mp3"
-  ];
+  ].sort(() => Math.random() - 0.5);
 
-  for (let i = songs.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [songs[i], songs[j]] = [songs[j], songs[i]];
-  }
-
-  let index = Math.floor(Math.random() * songs.length);
+  let index = 0;
 
   function formatTime(sec) {
     const m = Math.floor(sec / 60);
@@ -139,12 +136,20 @@ document.addEventListener("DOMContentLoaded", () => {
   function draw() {
     requestAnimationFrame(draw);
     analyser.getByteFrequencyData(data);
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     const barWidth = canvas.width / data.length;
+
     for (let i = 0; i < data.length; i++) {
       const h = data[i] / 255 * canvas.height;
       ctx.fillStyle = "white";
-      ctx.fillRect(i * barWidth, canvas.height - h, barWidth - 2, h);
+      ctx.fillRect(
+        i * barWidth,
+        canvas.height - h,
+        barWidth - 2,
+        h
+      );
     }
   }
 
@@ -152,14 +157,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   muteToggle.addEventListener("click", async () => {
     if (audioCtx.state === "suspended") await audioCtx.resume();
-    if (audio.muted) {
-      audio.muted = false;
-      audio.play().catch(() => {});
-      muteToggle.textContent = "MUTE";
-    } else {
-      audio.muted = true;
-      muteToggle.textContent = "UNMUTE";
-    }
+
+    audio.muted = !audio.muted;
+    muteToggle.textContent = audio.muted ? "UNMUTE" : "MUTE";
+    if (!audio.muted) audio.play().catch(() => {});
   });
 
   playCurrent();
