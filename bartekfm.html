@@ -126,67 +126,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   const source = audioCtx.createMediaElementSource(audio);
+  const analyser = audioCtx.createAnalyser();
 
-  const splitter = audioCtx.createChannelSplitter(2);
-  const analyserL = audioCtx.createAnalyser();
-  const analyserR = audioCtx.createAnalyser();
+  analyser.fftSize = 64;
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
 
-  analyserL.fftSize = analyserR.fftSize = 64;
+  const data = new Uint8Array(analyser.frequencyBinCount);
 
-  source.connect(splitter);
-  splitter.connect(analyserL, 0);
-  splitter.connect(analyserR, 1);
-
-  analyserL.connect(audioCtx.destination);
-
-  const dataL = new Uint8Array(analyserL.frequencyBinCount);
-  const dataR = new Uint8Array(analyserR.frequencyBinCount);
-
-  /* ===== STEREO PIONEER LED VISUALIZER ===== */
+  /* ===== CLASSIC PIONEER LED VISUALIZER (MONO) ===== */
   function draw() {
     requestAnimationFrame(draw);
-
-    analyserL.getByteFrequencyData(dataL);
-    analyserR.getByteFrequencyData(dataR);
+    analyser.getByteFrequencyData(data);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const bars = dataL.length;
+    const bars = data.length;
     const barWidth = canvas.width / bars;
 
-    const dotHeight = 4;
+    const dotHeight = 6;
     const dotGap = 2;
-
-    const halfHeight = canvas.height / 2;
-    const maxDots = Math.floor(halfHeight / (dotHeight + dotGap));
+    const maxDots = Math.floor(canvas.height / (dotHeight + dotGap));
 
     for (let i = 0; i < bars; i++) {
-      const leftVal = dataL[i] / 255;
-      const rightVal = dataR[i] / 255;
+      const value = data[i] / 255;
+      const litDots = Math.floor(value * maxDots);
 
-      const leftDots = Math.floor(leftVal * maxDots);
-      const rightDots = Math.floor(rightVal * maxDots);
-
-      // LEFT CHANNEL (TOP)
-      for (let d = 0; d < leftDots; d++) {
+      for (let d = 0; d < litDots; d++) {
         const x = i * barWidth + barWidth * 0.15;
         const y =
-          halfHeight -
+          canvas.height -
           (d + 1) * (dotHeight + dotGap);
 
         ctx.fillStyle = "#ffffff";
-        ctx.fillRect(x, y, barWidth * 0.7, dotHeight);
-      }
-
-      // RIGHT CHANNEL (BOTTOM)
-      for (let d = 0; d < rightDots; d++) {
-        const x = i * barWidth + barWidth * 0.15;
-        const y =
-          halfHeight +
-          d * (dotHeight + dotGap);
-
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(x, y, barWidth * 0.7, dotHeight);
+        ctx.fillRect(
+          x,
+          y,
+          barWidth * 0.7,
+          dotHeight
+        );
       }
     }
   }
