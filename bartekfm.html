@@ -29,7 +29,6 @@
   <h2>BartekFM™ – Najlepsze hity!</h2>
 
   <div id="bartekfm">
-
     <div id="now-playing"></div>
     <div id="time-info"></div>
 
@@ -135,18 +134,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const data = new Uint8Array(analyser.frequencyBinCount);
 
+  /* ===== PIONEER LED VISUALIZER ===== */
   function draw() {
     requestAnimationFrame(draw);
     analyser.getByteFrequencyData(data);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const barWidth = canvas.width / data.length;
+    const bars = data.length;
+    const barWidth = canvas.width / bars;
 
-    for (let i = 0; i < data.length; i++) {
-      const h = data[i] / 255 * canvas.height;
-      ctx.fillStyle = "white";
-      ctx.fillRect(i * barWidth, canvas.height - h, barWidth - 2, h);
+    const dotHeight = 6;
+    const dotGap = 2;
+    const maxDots = Math.floor(canvas.height / (dotHeight + dotGap));
+
+    for (let i = 0; i < bars; i++) {
+      const value = data[i] / 255;
+      const litDots = Math.floor(value * maxDots);
+
+      for (let d = 0; d < litDots; d++) {
+        const x = i * barWidth + barWidth * 0.15;
+        const y =
+          canvas.height -
+          (d + 1) * (dotHeight + dotGap);
+
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(
+          x,
+          y,
+          barWidth * 0.7,
+          dotHeight
+        );
+      }
     }
   }
 
