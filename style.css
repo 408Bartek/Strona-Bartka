@@ -232,7 +232,11 @@ a:active {
 }
 
 #bartekfm button {
-  all: unset;
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: none;
+
   display: inline-block;
   padding: 14px 28px;
   margin: 10px;
@@ -260,14 +264,6 @@ a:active {
   transform: translateY(1px) scale(.97);
 }
 
-#time-info {
-  font-size: 13px !important;
-  color: rgba(255, 255, 255, 0.7) !important;
-  font-weight: normal !important;
-  text-transform: none !important;
-  line-height: 1.2;
-}
-
 @media (max-width: 768px) {
   header h1 { font-size: 26px; }
   a { padding: 11px 20px; font-size: 15px; }
@@ -277,6 +273,7 @@ a:active {
   }
 
 }
+
 
 
 
