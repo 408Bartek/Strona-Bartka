@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("visualizer");
   const ctx = canvas.getContext("2d");
 
-  const songs = [
+  const songs = [ // <-- ZMIANA (usunięte losowanie)
     "Boston - More than a Feeling.mp3",
     "Kult - Arahja.mp3",
     "Paktofonika - Chwile Ulotne.mp3",
@@ -90,9 +90,9 @@ document.addEventListener("DOMContentLoaded", () => {
     "Tame Impala - Let It Happen.mp3",
     "alt-J - Breezeblocks.mp3",
     "U96 - Club Bizarre.mp3"
-  ].sort(() => Math.random() - 0.5);
+  ];
 
-  let index = 0;
+  let index = Math.floor(Math.random() * songs.length); // <-- ZMIANA (losowy start)
 
   function formatTime(sec) {
     const m = Math.floor(sec / 60);
@@ -182,8 +182,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
-
-
-
-
-
