@@ -37,6 +37,10 @@
     <button id="mute-toggle">UNMUTE</button>
     <p>Chcesz aby w radiu leciała Twoja muzyka? Nie czekaj i wypełnij formularz!</p>
     <a href="https://forms.gle/NADxnHNCynke799z7" target="_blank" class="nav-btn">Formularz</a>
+    <p>Lista utworów:</p>
+    <p>Kult - Arahja</p>
+    <p>Paktofonika - Chwile Ulotne</p>
+    <p>Paktofonika - Nie ma mnie dla nikog</p>
 
     <audio id="audio" muted></audio>
   </div>
@@ -81,8 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("visualizer");
   const ctx = canvas.getContext("2d");
 
-  const songs = [ // <-- ZMIANA (usunięte losowanie)
-    "Boston - More than a Feeling.mp3",
+  const songs = [
     "Kult - Arahja.mp3",
     "Paktofonika - Chwile Ulotne.mp3",
     "Paktofonika - Nie ma mnie dla nikogo.mp3",
@@ -92,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "U96 - Club Bizarre.mp3"
   ];
 
-  let index = Math.floor(Math.random() * songs.length); // <-- ZMIANA (losowy start)
+  let index = Math.floor(Math.random() * songs.length);
 
   function formatTime(sec) {
     const m = Math.floor(sec / 60);
@@ -182,3 +185,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
